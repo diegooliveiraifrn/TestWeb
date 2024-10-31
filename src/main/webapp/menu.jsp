@@ -31,10 +31,10 @@
             
              if(senha.equals(senhaBanco)){
            
-                 out.println("<h1>CADASTRAR LIVRO</h1>");
-                 out.println("<h1>CONSULTAR LIVRO</h1>");
-                 out.println("<h1>ATUALIZAR LIVRO</h1>");
-                 out.println("<h1>DELETAR LIVRO</h1>");
+                 out.println("<h1><a href='cadastrar.jsp'>CADASTRAR LIVRO</a></h1>");
+                 out.println("<h1><a href='consultar.jsp'>CONSULTAR LIVRO</a></h1>");
+                 out.println("<h1><a href='atualizar.jsp'>ATUALIZAR LIVRO</a></h1>");
+                 out.println("<h1><a href='deletar.jsp'>DELETAR LIVRO</a></h1>");
              
              }else{
                  out.println("<h1>USUÁRIO OU SENHA INCORRETOS</h1>");

@@ -9,6 +9,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import model.Livro;
 
 public class Banco {
     
@@ -17,9 +19,9 @@ public class Banco {
     public Connection conn;
     
     public Banco(){
-        String url = "jdbc:mysql://biblioteca.c36nogcf3xn0.sa-east-1.rds.amazonaws.com:3306/biblioteca";
-        String usr = "admin";
-        String pas = "ifrn$2024";
+        String url = "jdbc:mysql://localhost:3306/biblioteca";
+        String usr = "root";
+        String pas = "";
         
         try{
             Class.forName("com.mysql.jdbc.Driver");
@@ -51,5 +53,40 @@ public class Banco {
         }
         return senha;
     }
-        
+    
+    public ArrayList<Livro> getLivrosByTitulo(String titulo) throws SQLException{
+        ArrayList<Livro> livros = new ArrayList<Livro>();
+        rs = stmt.executeQuery("SELECT * FROM livros WHERE titulo like '%"+titulo+"%'");
+        while(rs.next()){
+            Livro livro = new Livro();
+            
+            livro.setTitulo(rs.getString("titulo"));
+            livro.setAutor(rs.getString("autor"));
+            livro.setExemplares(rs.getInt("exemplares"));
+            
+            livros.add(livro);
+        }
+        return livros;
+    }
+    
+    
+    public void deletarLivro(String titulo) throws SQLException{
+        stmt.executeUpdate("DELETE FROM livros WHERE titulo = '"+titulo+"'");
+    }
+    
+    public void cadastrarLivro(Livro l) throws SQLException{
+        stmt.executeUpdate("INSERT INTO livros VALUES('"+l.getId()+"', '"+l.getTitulo()+"', '"+l.getAutor()+"', '"+l.getEdicao()+"', '"+l.getEditora()+"', '"+l.getAno()+"', '"+l.getCodigo()+"', '"+l.getExemplares()+"')");
+    }
+    
+    public void atualizarLivro(String tituloAntigo, String tituloNovo, String autor, String edicao, String editora, String ano, String codigo, String exemplares) throws SQLException{
+        stmt.executeUpdate("UPDATE livros SET \n" +
+                            "titulo = '"+tituloNovo+"', \n" +
+                            "autor = '"+autor+"', \n" +
+                            "edicao = '"+edicao+"', \n" +
+                            "editora = '"+editora+"', \n" +
+                            "ano = '"+ano+"', \n" +
+                            "codigo = '"+codigo+"', \n" +
+                            "exemplares = '"+exemplares+"'\n" +
+                            "WHERE titulo = '"+tituloAntigo+"'");
+    }
 }
